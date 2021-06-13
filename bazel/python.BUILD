@@ -8,14 +8,20 @@ cc_library(
     hdrs = select(
         {
             "@bazel_tools//tools/python:PY2": glob(["usr/include/python2.7/*.h"]),
-            "@bazel_tools//tools/python:PY3": glob(["usr/include/python3.8/**/*.h"]),
+            "@bazel_tools//tools/python:PY3": glob([
+                "opt/conda/include/python3.6m/**/*.h",
+                "opt/conda/lib/python3.6/site-packages/numpy/core/include/**/*.h"
+            ]),
         },
         no_match_error = "Internal error, Python version should be one of PY2 or PY3",
     ),
     includes = select(
         {
             "@bazel_tools//tools/python:PY2": ["usr/include/python2.7"],
-            "@bazel_tools//tools/python:PY3": ["usr/include/python3.8"],
+            "@bazel_tools//tools/python:PY3": [
+                "opt/conda/include/python3.6m",
+                "opt/conda/lib/python3.6/site-packages/numpy/core/include"
+            ],
         },
         no_match_error = "Internal error, Python version should be one of PY2 or PY3",
     ),
@@ -56,3 +62,4 @@ alias(
     actual = ":python_headers",
     visibility = ["//visibility:public"],
 )
+
